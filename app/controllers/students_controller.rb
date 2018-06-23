@@ -9,34 +9,43 @@ class StudentsController < ApplicationController
     if @student.save
       render json: @student
     else
-      render json: { errors: @student.errors.messages }
+      render json: { message: @student.errors.messages }, status: 400, head: :bad_request
     end
   end
   
   def upload_image
-    @student = Student.find_by(student_id: params[:student_id])
-    @student.images.build(image_params)
+    @student = Student.find_by(student_id: params[:id])
+    if @student
+      image = @student.images.build({ picture_code: params[:picture_code] })
+      if image.save
+        render json: image
+      else
+        render json: { message: image.errors.messages }, status: 400, head: :bad_request
+      end
+    else
+      render json: { error: 'Student not found' }, status: :not_found, head: :not_found
+    end
   end
   
   def images
-    student = Student.find_by(student_id: params[:student_id])
+    student = Student.find_by(student_id: params[:id])
     if student
       images = []
       student.images.each do |image|
-        images.push(cl_image_path(image.picture_code + '.jpg'))
+        images.push(Cloudinary::Utils.cloudinary_url(image.picture_code + '.jpg'))
       end
       render json: { images: images }
     else
-      render json: { error: 'Student not found' }
+      render json: { error: 'Student not found' }, status: :not_found, head: :not_found
     end
   end
   
   def destroy
-    @student = Student.find_by(student_id: params[:student_id])
+    @student = Student.find_by(student_id: params[:id])
     if @student && @student.destroy
       render json: { success: true }
     else
-      render json: { error: 'There was an error deleting user with this id' }
+      render json: { error: 'There was an error deleting user with this id' }, status: :not_found, head: :not_found
     end
   end
   
@@ -44,8 +53,5 @@ class StudentsController < ApplicationController
   def student_params
     params.permit(:student_id, :nickname)
   end
-  
-  def image_params
-    params.permit(:student_id, :picture_code)
-  end
+
 end
