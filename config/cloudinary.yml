@@ -1,0 +1,19 @@
+---
+development:
+  cloud_name: csci5409-sd877278
+  api_key: '594745166763972'
+  api_secret: F0madx0Ou7rcm8UKaqT9zDztrh4
+  enhance_image_tag: true
+  static_image_support: false
+production:
+  cloud_name: csci5409-sd877278
+  api_key: '594745166763972'
+  api_secret: F0madx0Ou7rcm8UKaqT9zDztrh4
+  enhance_image_tag: true
+  static_image_support: true
+test:
+  cloud_name: csci5409-sd877278
+  api_key: '594745166763972'
+  api_secret: F0madx0Ou7rcm8UKaqT9zDztrh4
+  enhance_image_tag: true
+  static_image_support: false
