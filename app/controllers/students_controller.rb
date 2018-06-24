@@ -32,7 +32,8 @@ class StudentsController < ApplicationController
     if student
       images = []
       student.images.each do |image|
-        images.push(Cloudinary::Utils.cloudinary_url(image.picture_code + '.jpg'))
+        img_extension = image.picture_code.split('.').length > 1 ? '' : '.jpg'
+        images.push(Cloudinary::Utils.cloudinary_url(image.picture_code + img_extension))
       end
       render json: { images: images }
     else

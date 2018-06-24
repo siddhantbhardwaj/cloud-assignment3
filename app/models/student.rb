@@ -7,6 +7,6 @@ class Student < ApplicationRecord
   # ===============
   # = Validations =
   # ===============
-  validates :student_id, presence: true, length: {minimum: 3, maximum: 3}
-  validates :nickname, presence: true
+  validates :student_id, presence: true, length: { is: 3 }, numericality: { only_integer: true }
+  validates :nickname, presence: true, length: { maximum: 6 }
 end
